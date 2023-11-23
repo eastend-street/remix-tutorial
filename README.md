@@ -39,4 +39,5 @@ Make sure to deploy the output of `remix build`
 
 
 ### Progress
-Next: https://remix.run/docs/en/main/start/tutorial#url-params-in-loaders
+
+Next: https://remix.run/docs/en/main/start/tutorial#active-link-styling
