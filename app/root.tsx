@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { json, redirect } from '@remix-run/node';
 import {
   Form,
@@ -28,12 +29,19 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   const url = new URL(request.url);
   const q = url.searchParams.get('q');
   const contacts = await getContacts(q);
-  return json({ contacts });
+  return json({ contacts, q });
 };
 
 export default function App() {
-  const { contacts } = useLoaderData<typeof loader>();
+  const { contacts, q } = useLoaderData<typeof loader>();
   const navigation = useNavigation();
+
+  useEffect(() => {
+    const searchField = document.getElementById('q');
+    if (searchField instanceof HTMLInputElement) {
+      searchField.value = q || '';
+    }
+  }, [q]);
 
   return (
     <html lang="en">
@@ -51,9 +59,10 @@ export default function App() {
               <input
                 id="q"
                 aria-label="Search contacts"
+                defaultValue={q || ''}
+                name="q"
                 placeholder="Search"
                 type="search"
-                name="q"
               />
               <div id="search-spinner" aria-hidden hidden={true} />
             </Form>
